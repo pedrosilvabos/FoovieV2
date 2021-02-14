@@ -8,7 +8,7 @@ use App\Models\Ingredient;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Auth;
 class IngredientController extends Controller
 {
     /**
@@ -34,15 +34,16 @@ class IngredientController extends Controller
 
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
+            'owner' => 'required|max:255'
         ]);
 
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $project = Ingredient::create($data);
-
-        return response(['ingredient' => new ProjectResource($project), 'message' => 'Created ingredient successfully'], 201);
+        $ingredient = Ingredient::create($data);
+        $ingredient->owner = Auth::user()->id;
+        return response(['ingredient' => new ProjectResource($ingredient), 'message' => 'Created ingredient successfully'], 201);
     }
 
     /**
