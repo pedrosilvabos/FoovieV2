@@ -18,7 +18,7 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        $ingredients = Ingredient::all();
+        $ingredients = Ingredient::where('owner', Auth::user()->id)->get();
         return response([ 'ingredients' => ProjectResource::collection($ingredients), 'message' => 'Retrieved ingredients successfully'], 200);
     }
 
@@ -34,7 +34,7 @@ class IngredientController extends Controller
 
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
-            'owner' => 'required|max:255'
+            'owner' => 'max:255'
         ]);
 
         if ($validator->fails()) {
@@ -43,6 +43,7 @@ class IngredientController extends Controller
 
         $ingredient = Ingredient::create($data);
         $ingredient->owner = Auth::user()->id;
+        $ingredient->save();
         return response(['ingredient' => new ProjectResource($ingredient), 'message' => 'Created ingredient successfully'], 201);
     }
 
