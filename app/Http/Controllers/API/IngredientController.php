@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProjectResource;
+use App\Models\Ingredient;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\ProjectResource;
 
-class ProjectController extends Controller
+class IngredientController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
-        return response([ 'projects' => ProjectResource::collection($projects), 'message' => 'Retrieved successfully!'], 200);
+        $ingredients = Ingredient::all();
+        return response([ 'ingredients' => ProjectResource::collection($ingredients), 'message' => 'Retrieved ingredients successfully'], 200);
     }
 
     /**
@@ -33,53 +34,52 @@ class ProjectController extends Controller
 
         $validator = Validator::make($data, [
             'name' => 'required|max:255',
-            'introduction' => 'required|max:255',
-            'cost' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response(['error' => $validator->errors(), 'Validation Error']);
         }
 
-        $project = Project::create($data);
+        $project = Ingredient::create($data);
 
-        return response(['project' => new ProjectResource($project), 'message' => 'Created successfully'], 201);
+        return response(['ingredient' => new ProjectResource($project), 'message' => 'Created ingredient successfully'], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show(Ingredient $ingredient)
     {
-        return response(['project' => new ProjectResource($project), 'message' => 'Retrieved successfully'], 200);
+        return response(['ingredient' => new ProjectResource($ingredient), 'message' => 'Retrieved ingredient successfully'], 200);
+
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Ingredient $ingredient)
     {
-        $project->update($request->all());
+        $ingredient->update($request->all());
 
-        return response(['project' => new ProjectResource($project), 'message' => 'Update successfully'], 200);
+        return response(['project' => new ProjectResource($ingredient), 'message' => 'Updated ingredient successfully'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Project  $project
+     * @param  \App\Models\Ingredient  $ingredient
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Ingredient $ingredient)
     {
-        $project->delete();
+        $ingredient->delete();
 
         return response(['message' => 'Deleted']);
     }

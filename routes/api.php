@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\IngredientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,4 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::apiResource('projects', ProjectController::class)->middleware('auth:api');
+Route::apiResource('ingredients', IngredientController::class)->middleware('auth:api');
