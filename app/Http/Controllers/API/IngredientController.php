@@ -56,7 +56,6 @@ class IngredientController extends Controller
     public function show(Ingredient $ingredient)
     {
         return response(['ingredient' => new ProjectResource($ingredient), 'message' => 'Retrieved ingredient successfully'], 200);
-
     }
 
     /**
@@ -69,7 +68,6 @@ class IngredientController extends Controller
     public function update(Request $request, Ingredient $ingredient)
     {
         $ingredient->update($request->all());
-
         return response(['project' => new ProjectResource($ingredient), 'message' => 'Updated ingredient successfully'], 200);
     }
 
